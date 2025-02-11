@@ -3,10 +3,13 @@ const fs = require('fs');
 const path = require('path');
 
 // Number of concurrent executions
-const EXECUTION_COUNT = 100;
+const EXECUTION_COUNT = 5;
 
 // Log file path
 const LOG_FILE = path.join(__dirname, 'execution_log.json');
+
+// Read `dummy.html` into memory as a string
+const htmlContent = fs.readFileSync(path.join(__dirname, 'dummy.html'), 'utf8');
 
 // Function to generate a unique, random file name
 const generateFileName = (index) => {
@@ -15,15 +18,16 @@ const generateFileName = (index) => {
     return `output_${index}_${timestamp}_${randomPart}.pdf`;
 };
 
-// Function to load HTML and generate a PDF
+// Function to load HTML content into Chromium and generate a PDF
 async function generatePDF(instanceIndex) {
     const startTime = new Date().toISOString();
     const browser = await chromium.launch();
     const page = await browser.newPage();
 
-    // Load the local dummy.html file
-    const filePath = `file://${path.resolve(__dirname, 'dummy.html')}`;
-    await page.goto(filePath);
+    // Load the HTML content into the browser
+    await page.setContent(htmlContent, { 
+        waitUntil: 'load' 
+    });
 
     // Generate a unique PDF file name
     const pdfFileName = generateFileName(instanceIndex);
