@@ -41,8 +41,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositorie
     && rm -rf /var/cache/* \
     && mkdir /var/cache/apk
 
-COPY local.conf /etc/fonts/local.conf
-
 # Playwright
 ENV CHROME_BIN=/usr/bin/chromium-browser \
     CHROME_PATH=/usr/lib/chromium/ \
