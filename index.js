@@ -21,7 +21,12 @@ const generateFileName = (index) => {
 // Function to load HTML content into Chromium and generate a PDF
 async function generatePDF(instanceIndex) {
     const startTime = new Date().toISOString();
-    const browser = await chromium.launch();
+    const browser = await chromium.launch(
+        {
+            executablePath: '/usr/bin/chromium-browser', // Update this path
+            headless: true  // Set to false if you need to see the browser
+        }
+    );
     const page = await browser.newPage();
 
     // Load the HTML content into the browser
