@@ -51,9 +51,9 @@ async function generatePDF(instanceIndex) {
     return { instanceIndex, pdfFileName, startTime, endTime };
 }
 
-async function newGeneratePDFThread (instanceIndex)
+async function newGeneratePDFThread (instance)
 {
-    const pdfBuffer = await limit(() => generatePdf(instanceIndex));
+    return await limit(() => generatePDF(instance));
 }
 
 // Function to run multiple instances
