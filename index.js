@@ -25,7 +25,7 @@ async function generatePDF(instanceIndex) {
     const startTime = new Date().toISOString();
     const browser = await chromium.launch(
         {
-            //executablePath: '/usr/bin/chromium', // Update this path
+            executablePath: '/usr/bin/chromium', // Update this path
             headless: true  // Set to false if you need to see the browser
         }
     );
