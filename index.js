@@ -2,7 +2,7 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const pLimit = require("p-limit");
-const limit = pLimit(3);
+const limit = pLimit(2);
 
 // Number of concurrent executions
 const EXECUTION_COUNT = 100;
