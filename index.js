@@ -41,10 +41,10 @@ async function generatePDF(instanceIndex) {
     } catch (error) {
         
     }
+    const pdfFileName = generateFileName(instanceIndex);
     
     if (loaded)
     {
-        const pdfFileName = generateFileName(instanceIndex);
         const pdfFilePath = path.join(__dirname, pdfFileName);
 
         // Create PDF
