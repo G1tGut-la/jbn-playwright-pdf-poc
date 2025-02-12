@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Number of concurrent executions
-const EXECUTION_COUNT = 5;
+const EXECUTION_COUNT = 100;
 
 // Log file path
 const LOG_FILE = path.join(__dirname, 'execution_log.json');
