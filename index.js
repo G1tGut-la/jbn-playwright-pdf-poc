@@ -5,7 +5,7 @@ const pLimit = require("p-limit");
 const limit = pLimit(2);
 
 // Number of concurrent executions
-const EXECUTION_COUNT = 100;
+const EXECUTION_COUNT = 10000;
 
 // Log file path
 const LOG_FILE = path.join(__dirname, 'execution_log.json');
