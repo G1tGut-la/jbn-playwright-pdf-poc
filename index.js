@@ -1,6 +1,8 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
+const pLimit = require("p-limit");
+const limit = pLimit(3);
 
 // Number of concurrent executions
 const EXECUTION_COUNT = 100;
@@ -49,13 +51,18 @@ async function generatePDF(instanceIndex) {
     return { instanceIndex, pdfFileName, startTime, endTime };
 }
 
+async function newGeneratePDFThread (instanceIndex)
+{
+    const pdfBuffer = await limit(() => generatePdf(instanceIndex));
+}
+
 // Function to run multiple instances
 async function runMultipleInstances() {
     console.log(`Starting ${EXECUTION_COUNT} Playwright instances...`);
 
     // Run all executions in parallel
     const results = await Promise.all(
-        Array.from({ length: EXECUTION_COUNT }, (_, i) => generatePDF(i + 1))
+        Array.from({ length: EXECUTION_COUNT }, (_, i) => newGeneratePDFThread(i + 1))
     );
 
     // Append results to log file
