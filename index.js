@@ -5,7 +5,7 @@ const pLimit = require("p-limit");
 const limit = pLimit(2);
 
 // Number of concurrent executions
-const EXECUTION_COUNT = 10000;
+const EXECUTION_COUNT = 1000;
 
 // Log file path
 const LOG_FILE = path.join(__dirname, 'execution_log.json');
@@ -25,26 +25,40 @@ async function generatePDF(instanceIndex) {
     const startTime = new Date().toISOString();
     const browser = await chromium.launch(
         {
-            executablePath: '/usr/bin/chromium', // Update this path
+            //executablePath: '/usr/bin/chromium', // Update this path
             headless: true  // Set to false if you need to see the browser
         }
     );
     const page = await browser.newPage();
 
     // Load the HTML content into the browser
-    await page.setContent(htmlContent, { 
-        waitUntil: 'load' 
-    });
+    loaded=false;
+    try {
+        await page.setContent(htmlContent, { 
+            waitUntil: 'load' 
+        });
+        loaded = true;
+    } catch (error) {
+        
+    }
+    
+    if (loaded)
+    {
+        const pdfFileName = generateFileName(instanceIndex);
+        const pdfFilePath = path.join(__dirname, pdfFileName);
 
+        // Create PDF
+        await page.pdf({ path: pdfFilePath, format: 'A4' });
+
+        // Close browser
+        await browser.close();
+    }
+    else
+    {
+        pdfFileName = 'Timeout generating file:'+ pdfFileName;
+    }
     // Generate a unique PDF file name
-    const pdfFileName = generateFileName(instanceIndex);
-    const pdfFilePath = path.join(__dirname, pdfFileName);
-
-    // Create PDF
-    await page.pdf({ path: pdfFilePath, format: 'A4' });
-
-    // Close browser
-    await browser.close();
+    
 
     const endTime = new Date().toISOString();
 
